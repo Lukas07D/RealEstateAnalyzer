@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: realestateanalyzer-postgres
+    environment:
+      POSTGRES_DB: realestateanalyzer
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      # 5433 na hoście, żeby nie kolidować z lokalnie zainstalowanym PostgreSQL na 5432.
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d realestateanalyzer"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:
