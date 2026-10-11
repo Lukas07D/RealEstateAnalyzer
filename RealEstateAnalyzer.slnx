@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/RealEstateAnalyzer.Api/RealEstateAnalyzer.Api.csproj" />
+    <Project Path="src/RealEstateAnalyzer.Application/RealEstateAnalyzer.Application.csproj" />
+    <Project Path="src/RealEstateAnalyzer.Domain/RealEstateAnalyzer.Domain.csproj" />
+    <Project Path="src/RealEstateAnalyzer.Infrastructure/RealEstateAnalyzer.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RealEstateAnalyzer.Application.Tests/RealEstateAnalyzer.Application.Tests.csproj" />
+    <Project Path="tests/RealEstateAnalyzer.Domain.Tests/RealEstateAnalyzer.Domain.Tests.csproj" />
+  </Folder>
+</Solution>
