@@ -1,0 +1,77 @@
+@Api_HostAddress = http://localhost:5233
+
+### Utworzenie oferty (201 + Location)
+# @name createOffer
+POST {{Api_HostAddress}}/api/offers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "street": "ul. Marszałkowska 10",
+  "city": "Warszawa",
+  "district": "Śródmieście",
+  "areaSquareMeters": 50,
+  "askingPrice": 500000,
+  "rooms": 2,
+  "floor": 3,
+  "yearBuilt": 1965,
+  "adminFee": 650,
+  "listingUrl": "https://example.com/oferta/123"
+}
+
+### Pobranie utworzonej oferty (200)
+GET {{Api_HostAddress}}/api/offers/{{createOffer.response.body.$.id}}
+Accept: application/json
+
+### Ustawienie założeń najmu (204)
+PUT {{Api_HostAddress}}/api/offers/{{createOffer.response.body.$.id}}/rental-assumptions
+Content-Type: application/json
+
+{
+  "monthlyRent": 2500,
+  "vacancyMonthsPerYear": 1,
+  "otherMonthlyCosts": 100
+}
+
+### Oferta z rentownością (200; oczekiwane: grossPercent 6.00, netPercent 3.70)
+GET {{Api_HostAddress}}/api/offers/{{createOffer.response.body.$.id}}
+Accept: application/json
+
+### Założenia najmu - błąd walidacji (400)
+PUT {{Api_HostAddress}}/api/offers/{{createOffer.response.body.$.id}}/rental-assumptions
+Content-Type: application/json
+
+{
+  "monthlyRent": 0,
+  "vacancyMonthsPerYear": 13,
+  "otherMonthlyCosts": -5
+}
+
+### Założenia najmu - nieistniejąca oferta (404)
+PUT {{Api_HostAddress}}/api/offers/00000000-0000-0000-0000-000000000001/rental-assumptions
+Content-Type: application/json
+
+{
+  "monthlyRent": 2500
+}
+
+### Nieistniejąca oferta (404)
+GET {{Api_HostAddress}}/api/offers/00000000-0000-0000-0000-000000000001
+Accept: application/json
+
+### Błąd walidacji (400, ValidationProblemDetails)
+POST {{Api_HostAddress}}/api/offers
+Content-Type: application/json
+Accept: application/json
+
+{
+  "city": "",
+  "district": "Mokotów",
+  "areaSquareMeters": 0,
+  "askingPrice": -1,
+  "rooms": 0,
+  "floor": 200,
+  "yearBuilt": 3000,
+  "adminFee": 0,
+  "listingUrl": "ftp://example.com"
+}
